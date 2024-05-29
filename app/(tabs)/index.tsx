@@ -13,9 +13,17 @@ import {
 import { useHeaderHeight } from "@react-navigation/elements";
 import { SearchBar } from "react-native-screens";
 import CategoryButton from "@/components/CategoryButton";
+import { useState } from "react";
 
 const Page = () => {
   const headerHeight = useHeaderHeight();
+
+  const [category, setCategory] = useState('All');
+  const onCatChanged = (category: string)=>{
+    console.log("Category: ", category);
+    setCategory(category);
+  }
+
   return (
     <>
       <Stack.Screen
@@ -63,7 +71,7 @@ const Page = () => {
             <Ionicons name="options" size={28} color={Color.white}/> 
           </TouchableOpacity>
         </View>
-        <CategoryButton/>
+        <CategoryButton onCategoryChanged={onCatChanged}/>
       </View>
     </>
   );
