@@ -3,29 +3,29 @@ import { Ionicons } from "@expo/vector-icons";
 import { Stack } from "expo-router";
 import {
   Image,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
-  Touchable,
   TouchableOpacity,
   View,
 } from "react-native";
 import { useHeaderHeight } from "@react-navigation/elements";
-import { SearchBar } from "react-native-screens";
-import CategoryButton from "@/components/CategoryButton";
 import { useState } from "react";
+import CategoryButton from "@/components/CategoryButton";
 import Listings from "@/components/Listings";
 import listingData from "@/data/destination.json";
-
+import GroupListing from "@/components/GroupListing";
+import GroupType from "@/data/group.json";
 
 const Page = () => {
   const headerHeight = useHeaderHeight();
 
-  const [category, setCategory] = useState('All');
-  const onCatChanged = (category: string)=>{
+  const [category, setCategory] = useState("All");
+  const onCatChanged = (category: string) => {
     console.log("Category: ", category);
     setCategory(category);
-  }
+  };
 
   return (
     <>
@@ -63,19 +63,30 @@ const Page = () => {
         }}
       />
       <View style={[styles.container, { paddingTop: headerHeight }]}>
-        <Text style={styles.headingText}>Explore The Beautiful World!</Text>
+        <ScrollView showsHorizontalScrollIndicator={false}>
+          <Text style={styles.headingText}>Explore The Beautiful World!</Text>
 
-        <View style={styles.searchSectionWrapper}>
-          <View style={styles.searchBar}>
-            <Ionicons name="search" size={18} style={{marginRight: 5}} color={Color.black} />
-            <TextInput placeholder="Search...." placeholderTextColor={"#D3D3D3"} />
+          <View style={styles.searchSectionWrapper}>
+            <View style={styles.searchBar}>
+              <Ionicons
+                name="search"
+                size={18}
+                style={{ marginRight: 5 }}
+                color={Color.black}
+              />
+              <TextInput
+                placeholder="Search...."
+                placeholderTextColor={"#D3D3D3"}
+              />
+            </View>
+            <TouchableOpacity onPress={() => {}} style={styles.filterBtn}>
+              <Ionicons name="options" size={28} color={Color.white} />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={()=> {}}style={styles.filterBtn}>
-            <Ionicons name="options" size={28} color={Color.white}/> 
-          </TouchableOpacity>
-        </View>
-        <CategoryButton onCategoryChanged={onCatChanged}/>
-        <Listings listings={listingData}/>
+          <CategoryButton onCategoryChanged={onCatChanged} />
+          <Listings listings={listingData} category={category} />
+          <GroupListing listings={GroupType} />
+        </ScrollView>
       </View>
     </>
   );
@@ -94,22 +105,21 @@ const styles = StyleSheet.create({
     color: Color.black,
     marginTop: 10,
   },
-  searchSectionWrapper:{
-    flexDirection:'row',
-    marginVertical:20,
-
+  searchSectionWrapper: {
+    flexDirection: "row",
+    marginVertical: 20,
   },
-  searchBar:{
-    flex:1,
-    flexDirection:'row',
-    backgroundColor:Color.white,
+  searchBar: {
+    flex: 1,
+    flexDirection: "row",
+    backgroundColor: Color.white,
     padding: 16,
-    borderRadius:10,
+    borderRadius: 10,
   },
-  filterBtn:{
-    backgroundColor:Color.primaryColor,
-    padding:12,
-    borderRadius:10,
-    marginLeft:20,
-  }
+  filterBtn: {
+    backgroundColor: Color.primaryColor,
+    padding: 12,
+    borderRadius: 10,
+    marginLeft: 20,
+  },
 });
